@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beerpong Teamauswahl</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #1e1e1e;
+      color: white;
+      padding: 2rem;
+    }
+    select, button {
+      font-size: 1.2rem;
+      padding: 0.5rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wähle dein Team</h1>
+  <select id="team-select">
+    <option>Bitte wählen...</option>
+    <option value="beerstmode.html">Beerstmode</option>
+    <option value="pulle_und_puelleken.html">Pulle & Pülleken</option>
+    <option value="zwei_alte_hasen_auf_dem_weg_zur_hoelle.html">Zwei alte Hasen auf dem Weg zur Hölle</option>
+    <option value="reservespieler_-_von_der_bank_zum_siegertreppchen.html">Reservespieler - Von der Bank zum Siegertreppchen</option>
+    <option value="ponghub.html">PongHub</option>
+    <option value="kuestenkanale_grande.html">Küstenkanale Grande</option>
+    <option value="game_of_throws.html">Game of Throws</option>
+    <option value="sarah_und_daniel.html">Sarah & Daniel</option>
+    <option value="bierannosaufus_ex_und_stehnochsaufus.html">BierannoSaufus Ex & StehnochSaufus</option>
+    <option value="viva_la_reyvolucion.html">Viva La Reyvoluciòn</option>
+    <option value="bierkoenige.html">Bierkönige</option>
+    <option value="peter_pong_und_trinkerbell.html">Peter Pong & Trinkerbell</option>
+    <option value="sektgabies.html">Sektgabies</option>
+    <option value="dont_stop_beerleaving.html">Don't Stop Beerleaving</option>
+    <option value="heimecker_braukunst.html">Heimecker Braukunst</option>
+  </select>
+  <br>
+  <button onclick="goToTeam()">In welcher Gruppe bin ich?</button>
+
+  <script>
+    function goToTeam() {
+      const selected = document.getElementById("team-select").value;
+      if (selected !== "Bitte wählen...") {
+        window.location.href = selected;
+      }
+    }
+  </script>
+</body>
+</html>

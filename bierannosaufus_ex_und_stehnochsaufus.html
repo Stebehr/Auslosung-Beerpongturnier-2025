@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beerpong Gruppe anzeigen</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #1e1e1e;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+    .rubbel-label {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #ffcc00;
+    }
+    #scratch-card {
+      margin: 10px auto 20px auto;
+      width: 300px;
+      height: 100px;
+      background-color: #d4af37;
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #group-name {
+      font-size: 1.2rem;
+      padding-top: 30px;
+      color: #1e1e1e;
+      z-index: 0;
+      position: relative;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ffb400;
+      color: black;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .group-list {
+      margin-top: 15px;
+      text-align: left;
+      padding: 0 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hallo Team <strong>BierannoSaufus Ex & StehnochSaufus</strong>!</h1>
+  <p class="rubbel-label">Rubbel mich frei</p>
+  <div id="scratch-card">
+    <div id="group-name">Du bist in der Gruppe:<br><strong>Pong-Profis24</strong></div>
+    <canvas id="scratch-canvas" width="300" height="100"></canvas>
+  </div>
+
+  <button id="show-group" class="hidden">Wer gehört zu meiner Gruppe?</button>
+  <div id="group-members" class="group-list hidden">
+    <h3>Mitglieder deiner Gruppe:</h3>
+    <ul>
+      <li>Küstenkanale Grande</li><li>Game of Throws</li><li>Sarah & Daniel</li><li>BierannoSaufus Ex & StehnochSaufus</li><li>Viva La Reyvoluciòn</li>
+    </ul>
+    <button id="show-all">Ich möchte alle Gruppen sehen</button>
+  </div>
+
+  <div id="all-groups" class="group-list hidden">
+    <h3>Alle Gruppen:</h3>
+    <strong>Hopfenhelden24</strong><ul><li>Beerstmode</li><li>Pulle & Pülleken</li><li>Zwei alte Hasen auf dem Weg zur Hölle</li><li>Reservespieler - Von der Bank zum Siegertreppchen</li><li>PongHub</li></ul>
+<strong>Pong-Profis24</strong><ul><li>Küstenkanale Grande</li><li>Game of Throws</li><li>Sarah & Daniel</li><li>BierannoSaufus Ex & StehnochSaufus</li><li>Viva La Reyvoluciòn</li></ul>
+<strong>Bechermeister24</strong><ul><li>Bierkönige</li><li>Peter Pong & Trinkerbell</li><li>Sektgabies</li><li>Don't Stop Beerleaving</li><li>Heimecker Braukunst</li></ul>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("scratch-canvas");
+    const ctx = canvas.getContext("2d");
+    const rect = canvas.getBoundingClientRect();
+
+    let isDrawing = false;
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const x = e.offsetX;
+      const y = e.offsetY;
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(x, y, 15, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
+
+    function checkScratchCompletion() {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let scratchedPixels = 0;
+      for (let i = 0; i < imageData.data.length; i += 4) {
+        if (imageData.data[i + 3] === 0) scratchedPixels++;
+      }
+      const percent = scratchedPixels / (canvas.width * canvas.height) * 100;
+      if (percent > 50) {
+        document.getElementById("show-group").classList.remove("hidden");
+      }
+    }
+
+    canvas.addEventListener("mousedown", () => isDrawing = true);
+    canvas.addEventListener("mouseup", () => {
+      isDrawing = false;
+      checkScratchCompletion();
+    });
+    canvas.addEventListener("mousemove", draw);
+
+    canvas.addEventListener("touchstart", () => isDrawing = true);
+    canvas.addEventListener("touchend", () => {
+      isDrawing = false;
+      checkScratchCompletion();
+    });
+    canvas.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent("mousemove", {
+        clientX: touch.clientX - rect.left,
+        clientY: touch.clientY - rect.top
+      });
+      canvas.dispatchEvent(mouseEvent);
+    });
+
+    ctx.fillStyle = "#d4af37";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    document.getElementById("show-group").addEventListener("click", () => {
+      document.getElementById("group-members").classList.remove("hidden");
+    });
+
+    document.getElementById("show-all").addEventListener("click", () => {
+      document.getElementById("all-groups").classList.remove("hidden");
+    });
+  </script>
+
+</body>
+</html>
