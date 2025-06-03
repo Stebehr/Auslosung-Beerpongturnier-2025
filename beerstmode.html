@@ -89,67 +89,7 @@
 
   </div>
 
-  <script>
-    const canvas = document.getElementById("scratch-canvas");
-    const ctx = canvas.getContext("2d");
-    const rect = canvas.getBoundingClientRect();
-
-    let isDrawing = false;
-
-    function draw(e) {
-      if (!isDrawing) return;
-      const x = e.offsetX;
-      const y = e.offsetY;
-      ctx.globalCompositeOperation = "destination-out";
-      ctx.beginPath();
-      ctx.arc(x, y, 15, 0, Math.PI * 2, false);
-      ctx.fill();
-    }
-
-    function checkScratchCompletion() {
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      let scratchedPixels = 0;
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        if (imageData.data[i + 3] === 0) scratchedPixels++;
-      }
-      const percent = scratchedPixels / (canvas.width * canvas.height) * 100;
-      if (percent > 50) {
-        document.getElementById("show-group").classList.remove("hidden");
-      }
-    }
-
-    canvas.addEventListener("mousedown", () => isDrawing = true);
-    canvas.addEventListener("mouseup", () => {
-      isDrawing = false;
-      checkScratchCompletion();
-    });
-    canvas.addEventListener("mousemove", draw);
-
-    canvas.addEventListener("touchstart", () => isDrawing = true);
-    canvas.addEventListener("touchend", () => {
-      isDrawing = false;
-      checkScratchCompletion();
-    });
-    canvas.addEventListener("touchmove", (e) => {
-      const touch = e.touches[0];
-      const mouseEvent = new MouseEvent("mousemove", {
-        clientX: touch.clientX - rect.left,
-        clientY: touch.clientY - rect.top
-      });
-      canvas.dispatchEvent(mouseEvent);
-    });
-
-    ctx.fillStyle = "#d4af37";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    document.getElementById("show-group").addEventListener("click", () => {
-      document.getElementById("group-members").classList.remove("hidden");
-    });
-
-    document.getElementById("show-all").addEventListener("click", () => {
-      document.getElementById("all-groups").classList.remove("hidden");
-    });
-  </script>
+  <script src="scratchcard.js"></script>
 
 </body>
 </html>
